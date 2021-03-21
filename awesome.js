@@ -32,4 +32,8 @@ getData();
  }
                     
  
- 
+ function getData(){
+firebase.database().ref("/"+room_name).on('value',function(snapshot) {
+      document.getElementById("output")
+})
+ }
