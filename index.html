@@ -1,26 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>footbol</title>
+	<title>Kwitter</title>
+<link href="https://fonts.googleapis.com/css?family=Yeon+Sung&display=swap" rel="stylesheet"><meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="game.css">
-
-<script src="game_login.js"></script>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="kwitter.js"></script>
 </head>
 <body>
-
-<h4 id="player2_name"></h4> <span id="player2_score"></span>
-<h4 id="player1_name"></h4> <span id="player1_score"></span>
-
-<div class="container">
-	<center>
-		<h2 style="color: white;">The Math Quiz game</h2>
-	</center>
-</div>
+<center>
+	<h1 class="header">	
+		Kwitter	<sup>
+	<img src="m2.png">
+	</sup>
+</h1>
+	<div class="col-lg-4 col-md-6 col-sm-6 col-xs-11 login_div">
+	<img src="logo.png" class="logo">
+		<h3 >See what is happening in the world right now</h3>
+		<h4 >Join Kwitter today</h4>
+		<div class="form-group">
+		  <label >User Name:</label>
+        <input type="text" id="user_name" class="form-control" placeholder="user name">
+		</div>
+		<button id="login_button" class="btn btn-primary">Log in</button>
+		<br><br>
+	</div>
+	<button id="login_button" class="btn btn-primary" onclick="adduser()">login</button> 
+</center>
+<script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-analytics.js"></script>
+<script>
+var firebaseConfig = {
+    apiKey: "AIzaSyDbHtj_yWRN6JQ2TLpYl0N8wt22NyPfAtI",
+    authDomain: "kwitterpizzapuff.firebaseapp.com",
+    databaseURL: "https://kwitterpizzapuff-default-rtdb.firebaseio.com",
+    projectId: "kwitterpizzapuff",
+    storageBucket: "kwitterpizzapuff.appspot.com",
+    messagingSenderId: "48631013164",
+    appId: "1:48631013164:web:b1afee77cd5ab8f9291689",
+    measurementId: "G-8VL6PSR62Z"
+  };
+  firebase.initializeApp(firebaseConfig);	
+</script>
 </body>
 </html>
