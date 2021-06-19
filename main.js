@@ -1,41 +1,46 @@
-Webcam.set({
-    width:350,
-    height:300,
-    image_format : 'png',
-    png_quality:90
-});
 
-camera = document.getElementById("camera");
 
-Webcam.attach('camera');
 
-function take_snapshot()
+function take_snapshot(){
+    save('myFilterimage.png');
+}
+
+
+
+
+function preload() {
+   }
+
+
+function setup()  {
+    canvas = CreateCanvas(640, 480);
+    canvas.position(110, 250);
+    video = createCapture(VIDEO);
+    video.size(300,300)
+    video.hide();
+
+
+    poseNet = ml5.poseNet(video,modelloaded);
+    poseNet.on('pose', gotPoses);
+tint_color = "";
+}
+
+
+function draw()  {
+    image(video, 0, 0, 640, 480);
+    tint(tint_color);
+}
+
+function take_snapshot(){
+    save('student_name.png');
+}
+
+function filter_tint()
 {
-Webcam.snap(function(data_uri)  {
-    document.getElementById("result").innerHTML = '<img id="captured" src="'+data_uri+'"/>';
- });
+    tint_color = document.getElementById("color_name").value;
 }
 
-console.log('ml5 version:', ml5.version)
-
-classifier = ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/cS4p74Z4L/',modelLoaded);
-
-function modelLoaded(){
-    console.log('Model Loaded!')
+function draw() {
+    image(video, 0, 0,300, 300);
 }
-
-function check() {
-    img = document.getElementById('captured image');
-    classifier.classify(img, gotresult);
-}
-
-
-function gotresul(error, results) {
-    if (error) {
-        console.error(error);
-    } else {
-        console.log(results);
-        document.getElementById("result_object_name").innerHTML = results[0].label;
-        document.getElementById("result_object_accuracy").innerHTML = results[0].confidence.toFIXED(3);
-    }
-}
+function modelloaded()
