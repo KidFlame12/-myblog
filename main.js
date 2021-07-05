@@ -1,49 +1,28 @@
-
-
-
-function take_snapshot(){
-    save('myFilterimage.png');
-}
-
-noseX=0;
-noseY=0;
-
-
-function preload() {
-    clown_nose = loadImage("https://i.postimg.cc/y81YXDc2/Clown-nose-large.png")
-}
-
-
-function setup()  {
-    canvas = CreateCanvas(640, 480);
-    canvas.position(110, 250);
+function setup() {
+    canvas = createcanvas(300, 300);
+    canvas.center();
     video = createCapture(VIDEO);
-    video.size(300,300)
     video.hide();
+    classifier = ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/v_sl95BzE/model.json, modelLoaded') 
+}
 
-
-    poseNet = ml5.poseNet(video,modelloaded);
-    poseNet.on('pose', gotPoses);
-tint_color = "";
+function modelLoaded() {
+    console.log('Model Loaded!');
 }
 
 
-function draw()  {
-    image(video, 0, 0, 640, 480);
-    tint(tint_color);
+ function draw() {
+  image(video, 0, 0, 300, 300);
+  classifier.classify(video, gotResult);
 }
 
-function take_snapshot(){
-    save('student_name.png');
-}
 
-function filter_tint()
-{
-    tint_color = document.getElementById("color_name").value;
+function gotResult(error, results) {
+    if (error) {
+        console.error(error);
+    } else {
+        console.log(results);
+        document.getElementById("result_object_name").innerHTML = results[0].label;
+        document.getElementById("result_object_accuracy").innerHTML = results[0].confidence.toFixed(3);
+    }
 }
-
-function draw() {
-    image(video, 0, 0,300, 300);
-    image(clown_nose, noseX, noseY, 30, 30);
-}
-function modelloaded()
