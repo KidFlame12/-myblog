@@ -1,28 +1,28 @@
 function setup() {
-    canvas = createcanvas(300, 300);
-    canvas.center();
-    video = createCapture(VIDEO);
-    video.hide();
-    classifier = ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/v_sl95BzE/model.json, modelLoaded') 
+  canvas = createCanvas(300, 300);
+  canvas.center();
+  video = createCapture(VIDEO);
+  video.hide();
 }
+
 
 function modelLoaded() {
-    console.log('Model Loaded!');
+  console.log('Model Loaded!');
 }
 
 
- function draw() {
+function draw() {
   image(video, 0, 0, 300, 300);
-  classifier.classify(video, gotResult);
+  classifier.classify(video, gotresult);
 }
 
 
-function gotResult(error, results) {
-    if (error) {
-        console.error(error);
-    } else {
-        console.log(results);
-        document.getElementById("result_object_name").innerHTML = results[0].label;
-        document.getElementById("result_object_accuracy").innerHTML = results[0].confidence.toFixed(3);
-    }
+function gotresult(error, results) {
+ if (error) {
+ console.error(error) 
+} else {
+  console.log(results);
+  document.getElementById("result_object_name").innerHTML = results[0].label;
+  document.getElementById("result_object_accuracy").innerHTML = results[0].confidence.toFixed(3);
+ }
 }
