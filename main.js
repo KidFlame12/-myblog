@@ -1,46 +1,53 @@
+song = "";
+
 function setup() {
-    video = createCapture(VIDEO);
-    video.size(550, 500);
+    canvas = createCanvas(600, 500)
+    canvas.center();
 
 
-    canvas = createCanvas(550, 550);
-    canvas.position(560, 150);
- 
+    video = createCanvas(VIDEO);
+    video.hide();
+
     poseNet = ml5.poseNet(video, modelLoaded);
     poseNet.on('pose', gotPoses);
 }
 
-function draw {
-    background('#C8E916');
-
-    document.getElementById("square_side").innerHTML = "Width And Height of a Square will be = " + difference + "px";
-    fill("#00FFF4")
-    stroke("#FF00D7")
-    square("noseX, noseY, difference")
+function draw() {
+   image(video, 0, 0, 600, 500); 
 }
 
-function modelLoaded()  {
-    console.log('PoseNet Is Initialiazed')
+song = ""; 
+leftWristX = 0;
+leftWristY = 0;
+rightWristX = 0;
+rightWristY = 0;
+function preload()
+{
+    song = loadSound("music.mp3") 
+}
+
+function play() {
+   song.play;
+   song.setvolume(1);
+   song.rate(1); 
+}
+
+function modelLoaded() {
+    console.log('PoseNet is Initiliazed');
 }
 
 function gotPoses(results)
 {
     if(results.length > 0)
     {
-        console.log(results);
-        noseX = results[0].pose.nose.x; 
-        noseY = results[0].pose.nose.y;
-        console.log("noseX = " + noseX + "noseY = " + noseY );
+        console.log(results)
+         leftWristX = results[0].pose.leftWrist.x
+        leftWristX = results[0].pose.leftWrist.y
+        console.log("leftWristX = " + leftWristX + "leftWristY = " + leftWristY);
 
 
-        leftWristX = results[0].pose.nose.x;
-        rightWristX = results[0].pose.nose.y;
-        difference = floor(leftWristX - rightWristX);
-
-        console.log("leftWristX = " + leftWristX + "rightWristX = " + rightWristX + "difference = "+ difference);
+        leftWristX = results[0].pose.rightWrist.x
+        leftWristX = results[0].pose.rightWrist.y
+        console.log("rightWristX = " + rightWristX + "rightWristY = " + rightWristY);
     }
 }
-
-noseX=0;
-noseY=0;
-
