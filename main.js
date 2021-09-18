@@ -1,20 +1,43 @@
-img = "";
-
 function preload() {
-    img = loadimage('dog_cat.jpg')
+	world_start = loadSound("world_start.wav");
+	setSprites();
+	MarioAnimation();
 }
 
 function setup() {
-    canvas = createCanvas(640, 420)
-    canvas.center();
+	canvas = createCanvas(1240,336);
+	canvas.parent('canvas');
+
+	instializeInSetup(mario);
+
+	video = createCapture(VIDEO);
+	video.size(800, 400);
+	video.parent('game_console');
+
+	poseNet = ml5.poseNet(video, modelLoaded);
+  poseNet.on('pose', gotPoses);
+}
+
+function modelLoaded() {
+  console.log('Model Loaded!');
+}
+
+function gotPoses(results)
+{
+  if(results.length > 0)
+  {
+    noseX = results[0].pose.nose.x;
+    noseY = results[0].pose.nose.y;
+    console.log("noseX = " + noseX +", noseY = " + noseY);
+  }
 }
 
 
 function draw() {
-    image(img, 0, 0, 640, 420);
-    fill("FF0000");
-    text("dog", 45, 75);
-    nofill();
-    stroke("FF0000");
-    rect(30, 6, 450, 350 );
+	game()
 }
+
+
+
+
+
