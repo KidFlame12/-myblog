@@ -1,0 +1,33 @@
+
+
+
+
+
+
+
+label_series = Label(root, text="Fibbonacci Series:  ")
+label_flower = Label(root)                  
+label_spiral = Label(root)
+
+def Fibonacci():
+    num = 14
+    first_no = 0
+    second_no = 1
+    sum = 0
+    counter = 1
+    
+    while (counter <=num):
+        label_series["text"] += str(sum) + " "
+        counter = counter + 1
+        first_no = second_no
+        second_no = sum
+        sum = first_no + second_no
+        
+        label_flower['test'] = "Flower is still blooming"
+        label_spiral["text"] = "Spirals in roght direction are " + " and spirals in left direction are " + str(second_no) + ".\n Total spirals are " + str(sum)
+        
+btn = Button(root, text="Show Fibonacci Series", command=Fibonacci)
+btn.pack
+label_series.pack
+label_flower.pack
+label_spiral
