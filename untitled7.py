@@ -1,18 +1,13 @@
 from tkinter import *
-root=Tk()
-root.title("Mutiplication Master")
-root.geometry("600x400")
-input_box = Entry(root)
-input_box.pack()
 
+root = Tk()
+root.geometry("500x400")
+             
+dictionary = {"fruit":"mango",
+         "color":"pink",
+         "bird":"sparrow"}
 
-def addition():
-    number = 9
-    get_input = input_box.get()
-    try:
-        print(number + get_input)
-    except(TypeError):    
-        messagebox.showinfo("Error", "Cannot add two different data types: integer and string")
-Button = Button(root , text= "multply", command = multiplication)
-button.pack()
-root.mainloop
+try:
+    print(dictionary["animal"])
+except(KeyError):
+    print("key animal is not present in dictionary")
