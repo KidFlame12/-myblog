@@ -23,7 +23,26 @@ selectedval = StringVar()
 dropdown = ttk.Combobox(root, values = planets, textvariable=selectedval)
 
 def Planetinfo():
-   btn = Button(root, text="Show Plant Info" , command=PlanetInfo)   
+    planet = selectedval.get()
+    if planet == "Mercury":
+        label_planet_name['text']= "Mercury"
+        label_planet_image['image'] = Mercury
+        label_planet_gravity_radius['text']= "Gravity : 3.7 m/s² \n Radius : 2,439.7 km"
+        label_planet_info['text'] = " Mercury is the smallest planet in our solar system. It's just a little bigger then Earth's moon."
+    
+    elif planet == "Venus":
+            label_planet_name['text']= "Venus"
+            label_planet_image['image'] = Venus
+            label_planet_gravity_radius['text']= "Gravity : 8.87 m/s² \n Radius : 6,051.8 km"
+            label_planet_info['text'] = "Venus is the brightest object in the sky after the Sun and the moon, and sometimes looks like a bright star in the morning or evening sky."
+            
+    elif planet == "Earth": 
+        label_planet_name['text'] = "Earth"
+        label_planet_image['image'] = Earth
+        label_planet_gravity_radius['text'] = "Gravity : 9.807 m/s² \n Radius : 6,371 km"
+        label_planet_info['text'] = "Earth is the only place in the known universe confirmed to hostlife and it's the only one known for sure to have liquid water on its surface."
+
+btn = Button(root, text="Show Plant Info" , command=PlanetInfo)   
 btn.place(relx=0.5, rely=0.18, anchor=CENTER)
 
 label_planet.place(relx=0.2, rely=0.1 , anchor=CENTER)
