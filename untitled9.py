@@ -1,54 +1,32 @@
-from tkinter import *
-root = Tk()
-root.title("Fever Report")
-root.geometry("600x600")
+import hashlib 
+import json
+from time import time
 
-question1_radioButton=StringVar(value="0")
+chain = []
 
-Question1=Label(root, text ="Do you have headache and sore throat?")
-Question1.pack()
-question1_rl1=Radiobutton(root, text = "yes", variable=question1_radioButton, value="yes")
-question1_rl1.pack
-Question1_r2=Radiobutton(root, text = "no", variable=question1_radioButton, value="no")
-Question1_r2.pack
 
-question2_radioButton=StringVar(value="0")
-
-Question2=Label(root, text ="Is you body temperture high?")
-Question2.pack()
-question2_rl1=Radiobutton(root, text = "yes", variable=question1_radioButton, value="yes")
-question2_rl1.pack
-Question2_r2=Radiobutton(root, text = "no", variable=question1_radioButton, value="no")
-Question2_r2.pack
-
-question3_radioButton=StringVar(value="0")
-
-Question3=Label(root, text ="Are there any symptoms of eye redness?")
-Question3.pack()
-question3_rl1=Radiobutton(root, text = "yes", variable=question1_radioButton, value="yes")
-question3_rl1.pack
-Question3_r2=Radiobutton(root, text = "no", variable=question1_radioButton, value="no")
-Question3_r2.pack
-
-def fever_score():
-    score = 0
-    if question1_radioButton.get()=="yes":
-        score = score+20
-        print(score)
-    if question2_radioButton.get()=="yes":
-        score = score+20
-        print(score)
-  
-    if question3_radioButton.get()=="yes":
-       score = score+20
-       print(score)
-
-    if score <= 20:
-        messagebox.showinfo("Report","You don't need to visit a doctor.")
-    elif  score > 20 and score <= 40:
-        messagebox.showinfo("Report","you might perhaps have to visit a doctor.")
-    else :
-        messagebox.showinfo("Report","I strongly advise you to visit a doctor")
-btn = Button(root, text= "click me", command = fever_score)        
-btn.pack
-root.mainloop
+def block(proof, previous_hash=None):
+    transaction = {
+        'sender': 'Satoshi',
+        'recipient': 'Mike',
+        'amount': '5 ETH'
+    }
+    data = {
+        'index': 1,
+        'timestamp': time(),
+        'transactions': transaction,
+        'gas/fee': 0.1,
+        'proof': proof,
+        'previous_hash': previous_hash,
+        }
+    chain.append(block)
+    print("block information:", data)
+    string_object = json.dumps(data)
+    block_string = string_object.encode()
+    
+    raw_hash = hashlib.sha256(block_string)
+    hex_hash = raw_hash.hexdigest()
+    print("Hash code of block:", hex_hash)
+    
+    
+    block(previous_hash="No previous Hash. Since this is the first block.", proof=000)
