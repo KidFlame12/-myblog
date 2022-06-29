@@ -1,96 +1,57 @@
-from tkinter import *
-from PIL import ImageTk, Image
-
-root= Tk()
-root.title("Working On Canvas Using Functions")
-root.geometry("600x600")
+import hashlib
+import json
+from time import time 
 
 
-color_label.place(relx=0.8,rely=0.9, anchor=CENTER)
-color_label.place(relx=0.6,rely=0.9, anchor=CENTER)
-
-input_box = Entry(root)
-input_box.insert(0,"black")
-input_box.place(relx=0.8,rely=0.9, anchor= CENTER)
-
-
-
-canvas=Canvas(root, width = 590, height=510, bg = "white", highlightbackground="lightgray")
-canvas.pack()
-
-img =ImageTk.PhotoImage.open(Image.open("start_point1.png"))
-my_image = canvas.create_image(50,50,image=img)
-
-direction = ""
-oldx=50
-oldy=50
-newx=50
-newy=50
-def right_dir(event):
-    global direction
-    global oldx
-    global oldy
-    global newx
-    global newy
-    oldx = newx
-    oldy = newy
-    newx=newx+5
-    direction = "right"
-    draw(direction, oldx,oldy, newx ,newy)
-
-def left_dir(event):
-    global direction
-    global oldx
-    global oldy
-    global newx
-    global newy
-    oldx = newx
-    oldy = newy
-    newx=newx+5
-    direction = "left"
-    draw(direction, oldx,oldy, newx ,newy)
-
-def up_dir(event):
-    global direction
-    global oldx
-    global oldy
-    global newx
-    global newy
-    oldx = newx
-    oldy = newy
-    newx=newx+5
-    direction = "up"
-    draw(direction, oldx,oldy, newx ,newy)
-
-def down_dir(event):
-    global direction
-    global oldx
-    global oldy
-    global newx
-    global newy
-    oldx = newx
-    oldy = newy
-    newx=newx+5
-    direction = "down"
-    draw(direction, oldx,oldy, newx ,newy)
-
-def draw( direction,oldx,oldy, newx ,newy):
-    fill_color = input_box.get()
-    if (direction=="right"):
-        right_line= canvas.create_line(oldx,oldy,newx,newy,width = 3,fill= fill_color)
+class Block:
+    def __init(self):
+        self.chain = [] 
+        self.new_transaction = [] 
+        self.count = 0
+        self.new_block(previous_hash="No previous Hash. Since this the first block.")
+        
+    def new_block(self, previous_hash=None):
+        block = {
+            'Block No': self.count,
+            'timestamp': time()
+            'transaction': self.new_transaction or 'No Transactions First genesis Block', 
+            'gasfee': 3.5,
+            'previous_hash': previous_hash,
+            }
+        self.new_transaction = []
+        self.count = self.count + 1
+        self.chain.append(block)
+        
+        return block
     
-    if (direction=="left"):
-        left_line= canvas.create_line(oldx,oldy,newx,newy,width = 3,fill= fill_color)
+    def last_block(self):
+        return self.chain[-1]
     
-    if (direction=="down"):
-        down_line= canvas.create_line(oldx,oldy,newx,newy,width = 3,fill= fill_color)
-
-    if (direction=="up"):
-        up_line= canvas.create_line(oldx,oldy,newx,newy,width = 3,fill= fill_color)
-canvas.pack()
-root.bind("<Right>",right_dir)
-root.bind("<Left>",left_dir)
-root.bind("<Up>",up_dir)
-root.bind("<Down>",down_dir)
-root.mainloop()
+    def transaction(self, sender, recipient, amount):
+        sender_encoder = hashlib.sha256(sender.encode())
+        sender_hash = sender_encoder.hexdigest()
+        recipient_encoder = hashlib.sha256(recipient.encode())
+        recipient_hash = sender_encoder.hexdigest()
+        
+        transaction_data + {
+            'sender': sender_hash,
+            'recipient': recipient_hash,
+            'amount': amount
+        }
+        self.new_transaction.append(transaction_data)
+        return self.last_block
     
+    def hash(self, block):
+        string_object = json.dumps(block)
+        block_string = string_object.encode()
+       
+        
+        raw_hash = hashlib.sha256(block_string)
+        hex_hash = raw_hash.hexdigest()
+        self.chain.append(("Current Hash: ", hex_hash))
+        
+  
+    
+blockchain = Block()
+  
+print(blockchain.chain)
