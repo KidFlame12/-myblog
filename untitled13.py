@@ -1,28 +1,22 @@
-from tkinter import *
+from web3 import web3
+from web3.midddleware import geth_poa_middleware
 
-root = Tk()
-root.geometry("900x600")
-root.title("Classes")
+API_url = 'https://mainnet.infura.io/v3/ec5acb1175dc468c9f3ee9a84a02fe98'
+web3 = web3(web3.HTTPProvider(API_url))
 
-class CreateElements:
-    
-    def __init__(self):
-        print("This is CreateElements class")
-        
-    def createNewElement(self):
-        label = Label(root,text ="A new is been created using class", fg="red")
-        label.pack()
-        btn = Button(root, text =" Button ",command = self.message)
-        btn.pack(padx=20, pady = 10)
-    
-    def message(self):
-        messagebox.showinfo("showinfo", "You clicked the button created using class")
-        
-        
+Block_data = web3.eth.getblock(13054520)
 
-obj_of_CreateElements()
 
-btn = Button(root, text ="Click to create label and button element", command = obj_of_CreateElements.createNewElements)
-btn.pack(padx=20, pady = 10)
+transaction = web3.eth.get_transaction('')
 
-root.mainloop
+print('blockHash:',transaction['blockHash'].hex())
+print('blockNumber:',transaction['blockNumber'])
+print('from:',transaction['from'])
+print('gas:',transaction['gas'])
+print('gasprice in either:',transaction['gasprice'])
+print('hash:',transaction['hash'].hex)
+print('input:',transaction['input'])
+print('nonce:',transaction['nonce'])
+print('signature:',transaction['s'].hex())
+print('to:',transaction['to'])
+print('value:',transaction['value'])
