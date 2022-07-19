@@ -1,54 +1,32 @@
-from tkinter import *
-from POIL import ImageTk, ImageTk
-from datetime import datetime
-import pytz
-import time
+from web3 import Web3
+import json
+import requests
 
-root=Tk()
-root.geometry
-clock_image= ImageTk.Photo(Image.open ("clock.jpg"))
-#-----------------India------------
-india_label = Label(root,text="India")
-india_label.place(relx=0.2,rely=0.05, anchor= CENTER)
+infura_url = 'https://mainnet.infura.io/v3/cded6e6690d04259b05137dd10b170c3'
+web3 = Web3(Web3.HTTPProvider(infura_url)) #establish the connection
 
-india_clock=Label(root)
-india_clock["image"]=clock_image
-india_clock.place(relx=0.2,rely=0.35, anchor= CENTER)
+req_ethgas_data = requests.get('https://ethgasstation.info/json/ethgasAPI.json') #get the data from the API in json format.
+latest_block_info = json.loads(req_ethgas_data.content) # convert the json formatted data to normal data.
+
+#access various costs of transactions depending upon the speed.
+print('safeLow', latest_block_info['safeLow'])
+print('average', latest_block_info['average'])
+print('fast', latest_block_info['fast'])
+print('fastest', latest_block_info['fastest'])
+print('Block number:', latest_block_info['blockNum'])
 
 
-india_time = Label(root)
-india_time.place(relx=0.2,rely=0.65, anchor= CENTER)
-#-----------------USA------------
-usa_label = Label(root,text="USA")
-usa_label.place(relx=0.2,rely=0.05, anchor= CENTER)
+gas_price = web3.eth.gasPrice
+gas_price_in_ether = .10**18
+print("gas price in ether:",gas_price_in_ether)
+gas_price_in_dollar = gas_price_in_ether * 3105.35
+print("gas price in dollar:",gas_price_in_dollar)
 
-usa_clock=Label(root)
-usa_clock["image"]=clock_image
-usa_clock.place(relx=0.2,rely=0.35, anchor= CENTER)
+Block_data = web3.eth.getBlock(1352346)
 
-usa_time = Label(root)
-usa_time.place(relx=0.2,rely=0.65, anchor= CENTER)
-
-class India():
-    def times(self):
-        home=pytz.timezone('Asia/Kolkata')
-        local_time=datetime.now(home)
-        current_time=local_time.strftime("%H:%M:%S")
-        india_time["text"]="Time :"+ current_time
-        india_time.after(200,self.times)
-        
-class USA():
-    def times(self):
-        home=pytz.timezone('US/Central')
-        local_time=datetime.now(home)
-        current_time=local_time.strftime("%H:%M:%S")
-        usa_time["text"]="Time :"+ current_time
-        usa_time.after(200,self.times)
-                
-obj_india=India()
-obj_usa=USA()
-india_btn=Button(root,text="Show Time",command=obj_india.times)
-india_btn.place(relx=0.2,rely=0.8, anchor= CENTER)
-usa_btn=Button(root,text="Show Time",command=obj_usa.times)
-usa_btn.place(relx=0.2,rely=0.8, anchor= CENTER)
-root.mainloop()
+latest_transaction = Block_data['transaction'][-1].hex()
+print('transaction hash data:', latest_transaction )
+transaction_detail = web.eth.get_transaction(latest_transaction)
+gas_estimate = web3.eth.estimateGas({"to": transaction _detail["to"], 'from': transaction_detail['from']})
+print("Gas used by this transaction is: ", gas_estimate)
+print("Gas limit is: " transaction_detail['gas'])
