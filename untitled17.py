@@ -1,72 +1,104 @@
-from tkinter import *
-from PIL import ImageTk, Image
-from tkinter import ttk
-root.Tk()
-root.title("Resturant order")
-root.geometry("900x500")
-#-----------------Burger_Image----------
-burger = ImageTk.PhotoImage(Image.open ("burger1.png"))
-burger_image=Label(root)
-burger_image["image"]=burger
-burger_image.place(relx=0.7, rely=0.5,anchor=CENTER)
-label_heading=Label(root,text="Arnolds", font=("times",40,"bold"), fg="Orange")
-label_heading.place(relx=0.06, rely=0.2,anchor=CENTER)
-label_select_dish=Label(root,text="Select Dish",font=("times",15))
-label_select_dish.place(relx=0.06, rely=0.2,anchor=CENTER)
-dish=["burger","iced_americano"]
-dish_dropdown = ttk.Combobox(root ,state = "read only",values = dish)
-dish_dropdown.place(relx=0.25, rely=0.2, anchor=CENTER)
-label_select_addons=Label(root,text="Select Add-ons",font="times",15)
-label_select_addons.place(relx=0.08, rely=0.5,anchor=CENTER)
-toppings=[]
-toppings_dropdown = ttk.Combobox(root,state = "read only",values = dish)
-dish__amount=Label(root,font=("times",15,"bold"))
-dish_amount.place(relx=0.2,rely=0.75,anchor=CENTER)
-class parent():
-    
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jul 26 19:04:32 2022
+
+@author: Bradley
+"""
+
+#Predefined Code
+import hashlib
+import json
+from time import time
+
+
+class Block(object):
     def __init__(self):
-        print("This is parent")
-        
-    def menu(dish):
-        if dish=="burger":
-            toppings=["cheese","jalapeno"]
-            toppings
-            print("you can add the following toppings")
-            print("More cheese | Add jalapeno")
-        elif dish=="iced_americano":
-            print("you can add the following toppings")
-            print("Add` chocolate flavor | Add caramel flavor")
-        else:
-            print("please enter valid dish")
-            
-    def final_amount(dish, add_on):
-        if dish=="burger" and add_ons=="cheese":
-            print("you total $25.25")
-        elif dish=="burger" and add_ons=="jalepeno":
-            print("your total is $27.85")
-        elif dish=="iced_americano" and add_ons=="chocolate":
-            print("your total is $15.49")
-        elif dish=="iced_americano" and add_ons=="caramel":
-            print("your total is 17.96")
-            
-class child1(parent):
-    
-    def __init__(self,dish):
-        self.new_wish = dish
-    def get_menu(self):
-       parent.menu(self.new_dish)
+        self.chain = []
+        self.new_transactions = []
+        self.count = 0
+        self.new_block(previous_hash="No previous Hash. Since this is the first block.", proof=100)
 
-class child2(parent):
-    
-    def __init__(self,dish,addons):
-        self.newdish = dish
-        self.addons = addons
-        
-    def get_final_amount(self):
-        parent.final_amount(self.new_dish,self.addons)
-        
-child1_object=child1("burger")
-child1_object.getmenu()
+    def new_block(self, proof, previous_hash=None):
+        block = {
+            'Block No': self.count,
+            'timestamp': time(),
+            'transactions': self.new_transactions or 'No Transactions First Genesis Block',
+            'gasfee': 0.1,
+            'nonce': proof,
+            'previous_hash': previous_hash or self.hash(self.chain[-1]),
+        }
+        self.new_transactions = []
+        self.count = self.count + 1
+        self.chain.append(block)
 
-child2_object=child2("burger","jalepeno")
-child2_object.get_final_amount()
+        return block
+
+    def last_block(self):
+        return self.chain[-1]
+#End of Predefined Code
+# Student code begins
+   def proof_of_work(self, previous_proof):
+       new_proof = 1
+       check_proof_condition = False
+       
+       while check_proof_condition is False:
+           compare_proof = new_proof ** 2 - previous_proof ** 2
+           string_compare_proof = str(compare_proof).encode()
+           encode_proof = hashlib.sha256(string_compare_proof)
+           hash_proof = encode_proof.hexdigest()
+           
+           if hash_proof[:4] == '0000':
+               check_proof_condition = True
+           else:
+               new_proof = new_proof + 1
+        return new proof
+# Student code ends
+# Start of predefined code
+
+    def transaction(self, sender, recipient, amount):
+        sender_encoder = hashlib.sha256(sender.encode())
+        sender_hash = sender_encoder.hexdigest()
+        recipient_encoder = hashlib.sha256(recipient.encode())
+        recipient_hash = recipient_encoder.hexdigest()
+
+        transaction_data = {
+            'sender': sender_hash,
+            'recipient': recipient_hash,
+            'amount': amount
+        }
+        self.new_transactions.append(transaction_data)
+        return self.last_block
+
+#Start of Predefined Code
+    def hash(self, block):
+        string_object = json.dumps(block, sort_keys=True)
+        block_string = string_object.encode()
+
+        raw_hash = hashlib.sha256(block_string)
+        hex_hash = raw_hash.hexdigest()
+        block['Current hash'] = hex_hash
+        return hex_hash
+
+
+
+
+previous_block = blockchain.last_block()
+print ('our previous block:',previous_block)
+
+previous_proof = previous_block(['nonce']
+print (' previous block proof:',proof)
+
+proof = blockchain.proof_of_work()
+print ('Found proof of work at:',proof)
+
+previous_hash = blockchain.hash(previous_block)
+print('Previous block hash:',previous_hash)
+
+block = blockchain.new_block(proof, previous_hash)
+
+print("Data of blockchain:",blockchain.chain)
+blockchain = Block()
+transaction1 = blockchain.transaction("Satoshi", "Mike", '5 ETH')
+transaction2 = blockchain.transaction("Mike", "Satoshi", '1 ETH')
+transaction3 = blockchain.transaction("Satoshi", "Hal Finney", '5 ETH')
