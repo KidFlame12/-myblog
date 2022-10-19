@@ -1,31 +1,38 @@
-# Program to Upload Color Image and convert into Black & White image
-import os
-from flask import  Flask, request, redirect, url_for, render_template
-from werkzeug.utils import secure_filename
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-# Write load_form function below to Open and redirect to default upload webpage
+@app.route("/")
+def visitors():
 
+    # Load current count
+    counter_read_file = open("count.txt", "r")
+    visitors_count = int(counter_read_file.read())
+    counter_read_file.close()
 
+    # Increment the count
+    visitors_count = visitors_count + 1
 
+    # Overwrite the count
+    counter_write_file = open("count.txt", "w")
+    counter_write_file.write(str(visitors_count))
+    counter_write_file.close()
 
+    # Render HTML with count variable
+    return render_template("index.html", count=visitors_count)
 
-# Write upload_image Function to upload image and redirect to new webpage
+@app.route('/', methods=['POST'])
+def covid_stats():
+    # Load current count
+    counter_read_file = open("count.txt", "r")
+    visitors_count = int(counter_read_file.read())
+    counter_read_file.close()
 
+    text = request.form['text']
 
-
-
-
-
-
-
-
-# Write display_image Function to display the uploaded image
-
-
-
-
+    corona_data = 'https://corona.dnsforfamily.com/graph.png?c='+text
+    print(corona_data)
+    return render_template("index.html", image=corona_data, count=visitors_count)
 
 if __name__ == "__main__":
     app.run()
